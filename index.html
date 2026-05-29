@@ -1,830 +1,524 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Project Hub Dashboard</title>
-
-<!-- FONT -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- FONT AWESOME -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Showcase</title>
 
 <style>
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-:root{
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --text:#1f2937;
-  --sub:#6b7280;
-  --border:#e5e7eb;
-  --shadow:0 10px 30px rgba(0,0,0,.06);
-  --primary:#2563eb;
-  --hover:#f3f6fb;
-}
-
-body.dark{
-  --bg:#111827;
-  --card:#1f2937;
-  --text:#f9fafb;
-  --sub:#9ca3af;
-  --border:#374151;
-  --hover:#273244;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
 }
 
 body{
-  font-family:'Inter',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  transition:.3s ease;
+    background:#0f172a;
+    color:white;
+    overflow-x:hidden;
 }
 
-.container{
-  display:flex;
-  min-height:100vh;
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at top left,#2563eb55,transparent 30%),
+        radial-gradient(circle at bottom right,#9333ea55,transparent 30%);
+    z-index:-1;
 }
 
-/* SIDEBAR */
-.sidebar{
-  width:260px;
-  background:var(--card);
-  border-right:1px solid var(--border);
-  padding:24px;
-  transition:.3s;
-  position:fixed;
-  top:0;
-  left:0;
-  height:100vh;
-  z-index:100;
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    backdrop-filter:blur(15px);
+    background:rgba(15,23,42,.7);
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.sidebar.collapsed{
-  width:90px;
+.navbar{
+    max-width:1300px;
+    margin:auto;
+    padding:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
 .logo{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  margin-bottom:40px;
-}
-
-.logo-icon{
-  width:48px;
-  height:48px;
-  border-radius:16px;
-  background:linear-gradient(135deg,#2563eb,#60a5fa);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-size:20px;
-}
-
-.logo h2{
-  font-size:20px;
-}
-
-.sidebar.collapsed .logo h2,
-.sidebar.collapsed .menu span{
-  display:none;
-}
-
-.menu{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.menu button{
-  border:none;
-  background:none;
-  padding:14px;
-  border-radius:14px;
-  cursor:pointer;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  gap:14px;
-  font-size:15px;
-  transition:.2s;
-}
-
-.menu button:hover{
-  background:var(--hover);
-}
-
-/* MAIN */
-.main{
-  margin-left:260px;
-  flex:1;
-  padding:30px;
-  transition:.3s;
-}
-
-.main.expand{
-  margin-left:90px;
-}
-
-/* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-  margin-bottom:30px;
-}
-
-.header-left h1{
-  font-size:32px;
-  margin-bottom:8px;
-}
-
-.header-left p{
-  color:var(--sub);
-}
-
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:14px;
+    font-size:24px;
+    font-weight:bold;
 }
 
 .search-box{
-  position:relative;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
 }
 
-.search-box input{
-  width:260px;
-  padding:12px 16px 12px 42px;
-  border:none;
-  border-radius:14px;
-  background:var(--card);
-  color:var(--text);
-  box-shadow:var(--shadow);
-  outline:none;
+.search-box input,
+.search-box select{
+    padding:12px 15px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,.08);
+    color:white;
+    min-width:180px;
 }
 
-.search-box i{
-  position:absolute;
-  left:15px;
-  top:50%;
-  transform:translateY(-50%);
-  color:var(--sub);
+.hero{
+    max-width:1300px;
+    margin:auto;
+    padding:80px 20px 50px;
 }
 
-.profile{
-  background:var(--card);
-  padding:10px 16px;
-  border-radius:16px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  box-shadow:var(--shadow);
+.hero h1{
+    font-size:52px;
+    margin-bottom:15px;
 }
 
-.profile-avatar{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#2563eb,#60a5fa);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
+.hero p{
+    color:#cbd5e1;
+    line-height:1.7;
+    max-width:700px;
 }
 
-/* TOP ACTION */
-.top-action{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:26px;
-  gap:20px;
-  flex-wrap:wrap;
+.container{
+    max-width:1300px;
+    margin:auto;
+    padding:20px;
 }
 
-.date-box{
-  color:var(--sub);
-  font-size:15px;
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
 }
 
-.action-buttons{
-  display:flex;
-  gap:12px;
+.card{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    overflow:hidden;
+    transition:.3s;
+    backdrop-filter:blur(15px);
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.status{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:12px;
+    margin-bottom:12px;
+    background:#2563eb33;
+    color:#93c5fd;
+}
+
+.card h2{
+    margin-bottom:10px;
+}
+
+.desc{
+    color:#cbd5e1;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.tech{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.tech span{
+    background:rgba(255,255,255,.08);
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:12px;
+}
+
+.card-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
 }
 
 .btn{
-  border:none;
-  padding:12px 18px;
-  border-radius:14px;
-  cursor:pointer;
-  font-weight:600;
-  transition:.2s;
-}
-
-.btn-primary{
-  background:linear-gradient(135deg,#2563eb,#60a5fa);
-  color:white;
-}
-
-.btn-secondary{
-  background:var(--card);
-  color:var(--text);
-  box-shadow:var(--shadow);
+    padding:10px 16px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    text-decoration:none;
+    color:white;
+    background:#2563eb;
+    transition:.3s;
 }
 
 .btn:hover{
-  transform:translateY(-2px);
+    opacity:.85;
 }
 
-/* GRID */
-.project-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:22px;
-}
-
-.project-card{
-  background:var(--card);
-  border-radius:24px;
-  padding:22px;
-  position:relative;
-  box-shadow:var(--shadow);
-  transition:.25s ease;
-  border:1px solid var(--border);
-}
-
-.project-card:hover{
-  transform:translateY(-6px);
-}
-
-.project-icon{
-  width:70px;
-  height:70px;
-  border-radius:22px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:28px;
-  color:white;
-  margin-bottom:18px;
-}
-
-.project-card h3{
-  margin-bottom:10px;
-}
-
-.project-card p{
-  color:var(--sub);
-  font-size:14px;
-  line-height:1.6;
-  margin-bottom:22px;
-}
-
-.card-actions{
-  display:flex;
-  gap:10px;
-}
-
-.card-actions button,
-.card-actions a{
-  flex:1;
-  text-align:center;
-  text-decoration:none;
-  border:none;
-  padding:10px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-.open-btn{
-  background:#2563eb;
-  color:white;
-}
-
-.edit-btn{
-  background:#f3f4f6;
-}
-
-.delete-btn{
-  background:#fee2e2;
-  color:#dc2626;
-}
-
-.empty-state{
-  background:var(--card);
-  padding:50px;
-  text-align:center;
-  border-radius:24px;
-  box-shadow:var(--shadow);
-}
-
-.empty-state i{
-  font-size:60px;
-  margin-bottom:18px;
-  color:#9ca3af;
-}
-
-/* MODAL */
 .modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.4);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  z-index:999;
-}
-
-.modal.active{
-  display:flex;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    z-index:999;
 }
 
 .modal-content{
-  width:100%;
-  max-width:520px;
-  background:var(--card);
-  border-radius:28px;
-  padding:28px;
-}
-
-.modal-content h2{
-  margin-bottom:24px;
-}
-
-.form-group{
-  margin-bottom:18px;
-}
-
-.form-group label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:600;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select{
-  width:100%;
-  border:1px solid var(--border);
-  background:transparent;
-  color:var(--text);
-  padding:14px;
-  border-radius:14px;
-  outline:none;
-}
-
-.modal-buttons{
-  display:flex;
-  justify-content:flex-end;
-  gap:12px;
-  margin-top:24px;
-}
-
-.toast{
-  position:fixed;
-  right:30px;
-  bottom:30px;
-  background:#111827;
-  color:white;
-  padding:14px 18px;
-  border-radius:14px;
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
-  z-index:9999;
-}
-
-.toast.show{
-  opacity:1;
-}
-
-@media(max-width:900px){
-  .sidebar{
-    width:90px;
-  }
-
-  .sidebar .logo h2,
-  .sidebar .menu span{
-    display:none;
-  }
-
-  .main{
-    margin-left:90px;
-  }
-}
-
-@media(max-width:600px){
-  .main{
-    margin-left:0;
-    padding:20px;
-  }
-
-  .sidebar{
-    display:none;
-  }
-
-  .header{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .search-box input{
+    background:#111827;
     width:100%;
-  }
+    max-width:900px;
+    border-radius:24px;
+    overflow:auto;
+    max-height:95vh;
+}
 
-  .header-right{
+.modal-body{
+    padding:25px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.gallery img{
     width:100%;
-    flex-wrap:wrap;
-  }
+    border-radius:16px;
+    height:180px;
+    object-fit:cover;
+}
+
+.progress{
+    width:100%;
+    height:12px;
+    background:#1e293b;
+    border-radius:999px;
+    overflow:hidden;
+    margin:15px 0;
+}
+
+.progress div{
+    height:100%;
+    background:#2563eb;
+}
+
+.close-btn{
+    float:right;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.loading,
+.empty{
+    text-align:center;
+    padding:80px 20px;
+    color:#cbd5e1;
+}
+
+@media(max-width:768px){
+    .hero h1{
+        font-size:36px;
+    }
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-
-    <div class="logo">
-      <div class="logo-icon">
-        <i class="fa-solid fa-layer-group"></i>
-      </div>
-      <h2>My Project</h2>
-    </div>
-
-    <div class="menu">
-      <button onclick="toggleSidebar()">
-        <i class="fa-solid fa-bars"></i>
-        <span>Toggle Sidebar</span>
-      </button>
-
-      <button onclick="toggleDarkMode()">
-        <i class="fa-solid fa-moon"></i>
-        <span>Dark Mode</span>
-      </button>
-
-      <button 
-  class="admin-only"
-  onclick="openModal()"
-  style="display:none"
->
-      </button>
-    </div>
-
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main" id="main">
-
-    <div class="header">
-
-      <div class="header-left">
-        <h1>d'arch</h1>
-        <p>My Personal Project</p>
-      </div>
-
-      <div class="header-right">
+<header>
+    <div class="navbar">
+        <div class="logo">d'arch</div>
 
         <div class="search-box">
-          <i class="fa-solid fa-search"></i>
-          <input type="text" id="searchInput" placeholder="Search project...">
+            <input type="text" id="searchInput" placeholder="Search project...">
+
+            <select id="categoryFilter">
+                <option value="">All Category</option>
+            </select>
+
+            <select id="statusFilter">
+                <option value="">All Status</option>
+            </select>
         </div>
-
-        <div class="profile">
-          <div class="profile-avatar">D</div>
-          <div>
-            <strong>Developer</strong>
-            <div style="font-size:13px;color:var(--sub)">Administrator</div>
-          </div>
-        </div>
-
-      </div>
-
     </div>
+</header>
 
-    <div class="top-action">
+<section class="hero">
+    <h1>My Project'ed</h1>
+    <p>
+        
+    </p>
+</section>
 
-      <div class="date-box" id="dateNow"></div>
-
-      <div class="action-buttons">
-        <button class="btn btn-secondary" onclick="toggleDarkMode()">
-          <i class="fa-solid fa-circle-half-stroke"></i>
-          Theme
-        </button>
-<button 
-  class="btn btn-primary admin-only"
-  onclick="openModal()"
-  style="display:none"
->
-        </button>
-      </div>
-
+<div class="container">
+    <div id="loading" class="loading">Loading project...</div>
+    <div id="projectGrid" class="grid"></div>
+    <div id="emptyState" class="empty" style="display:none;">
+        Tidak ada project ditemukan.
     </div>
-
-    <div id="projectContainer" class="project-grid"></div>
-
-  </main>
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="projectModal">
-
-  <div class="modal-content">
-
-    <h2>Add Project</h2>
-
-    <div class="form-group">
-      <label>Project Name</label>
-      <input type="text" id="projectName">
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div class="modal-body" id="modalBody"></div>
     </div>
-
-    <div class="form-group">
-      <label>HTML File Link</label>
-      <input type="text" id="projectLink" placeholder="example: index.html">
-    </div>
-
-    <div class="form-group">
-      <label>Icon</label>
-      <select id="projectIcon">
-        <option value="fa-chart-line">Chart</option>
-        <option value="fa-wallet">Wallet</option>
-        <option value="fa-database">Database</option>
-        <option value="fa-robot">AI</option>
-        <option value="fa-folder">Folder</option>
-        <option value="fa-money-bill-wave">Finance</option>
-        <option value="fa-users">Users</option>
-        <option value="fa-file">File</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Icon Color</label>
-      <input type="color" id="projectColor" value="#2563eb">
-    </div>
-
-    <div class="form-group">
-      <label>Description</label>
-      <textarea id="projectDesc"></textarea>
-    </div>
-
-    <div class="modal-buttons">
-      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
-    </div>
-
-  </div>
-
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
+let allProjects = [];
 
-let projects = [];
+async function loadProjects(){
+    try{
+        const response = await fetch('database.json');
+        const data = await response.json();
 
-fetch('database/projects.json')
-  .then(res => res.json())
-  .then(data => {
+        allProjects = data.projects || [];
 
-    projects = data;
+        renderFilters(allProjects);
+        renderProjects(allProjects);
 
-    renderProjects();
+        document.getElementById('loading').style.display = 'none';
 
-  });
+    }catch(error){
+        document.getElementById('loading').innerHTML = `
+            Gagal membaca database<br><br>
+            Jalankan menggunakan Local Server.
+        `;
 
-let editIndex = null;
-let currentUser = {
-  username:'admin',
-  role:'admin'
-};
-
-
-
-const projectContainer = document.getElementById('projectContainer');
-
-function renderProjects(filter=''){
-
-  projectContainer.innerHTML='';
-
-  const filtered = projects.filter(p =>
-    p.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  if(filtered.length === 0){
-    projectContainer.innerHTML = `
-      <div class="empty-state">
-        <i class="fa-solid fa-folder-open"></i>
-        <h2>No Project Found</h2>
-        <p style="margin-top:10px;color:var(--sub)">
-          Add your first project to get started.
-        </p>
-      </div>
-    `;
-
-    return;
-  }
-
-  filtered.forEach((project,index)=>{
-
-    projectContainer.innerHTML += `
-      <div class="project-card">
-
-        <div class="project-icon" style="background:${project.color}">
-          <i class="fa-solid ${project.icon}"></i>
-        </div>
-
-        <h3>${project.name}</h3>
-        <p>${project.desc}</p>
-
-        <div class="card-actions">
-
-          <a href="${project.link}" class="open-btn">
-            Open
-          </a>
-
-          ${currentUser.role === 'admin' ? `
-
-<button class="edit-btn" onclick="editProject(${index})">
-  <i class="fa-solid fa-pen"></i>
-</button>
-
-<button class="delete-btn" onclick="deleteProject(${index})">
-  <i class="fa-solid fa-trash"></i>
-</button>
-
-` : ''}
-
-        </div>
-
-      </div>
-    `;
-
-  });
+        console.error(error);
+    }
 }
 
-function openModal(){
-  document.getElementById('projectModal').classList.add('active');
+function renderFilters(projects){
+    const categories = [...new Set(projects.map(p => p.category))];
+    const statuses = [...new Set(projects.map(p => p.status))];
+
+    const categoryFilter = document.getElementById('categoryFilter');
+    const statusFilter = document.getElementById('statusFilter');
+
+    categories.forEach(category => {
+        categoryFilter.innerHTML += `<option value="${category}">${category}</option>`;
+    });
+
+    statuses.forEach(status => {
+        statusFilter.innerHTML += `<option value="${status}">${status}</option>`;
+    });
+}
+
+function renderProjects(projects){
+    const grid = document.getElementById('projectGrid');
+    const empty = document.getElementById('emptyState');
+
+    grid.innerHTML = '';
+
+    if(projects.length === 0){
+        empty.style.display = 'block';
+        return;
+    }
+
+    empty.style.display = 'none';
+
+    projects.forEach(project => {
+
+        const techList = project.technology
+            .map(tech => `<span>${tech}</span>`)
+            .join('');
+
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        card.innerHTML = `
+            <img src="${project.thumbnail}" alt="${project.name}">
+
+            <div class="card-content">
+
+                <div class="status">${project.status}</div>
+
+                <h2>${project.name}</h2>
+
+                <p class="desc">${project.description}</p>
+
+                <div class="tech">${techList}</div>
+
+                <div class="card-footer">
+                    <small>${project.client}</small>
+
+                    <div style="display:flex; gap:10px;">
+                        <a href="${project.website}" target="_blank" class="btn">
+                            Visit
+                        </a>
+
+                        <button class="btn" onclick="showDetail(${project.id})">
+                            Detail
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+
+function showDetail(id){
+    const project = allProjects.find(p => p.id === id);
+
+    if(!project) return;
+
+    const gallery = project.gallery
+        .map(img => `<img src="${img}">`)
+        .join('');
+
+    const tags = project.tags
+        .map(tag => `<span>${tag}</span>`)
+        .join('');
+
+    const team = project.team
+        .map(member => `<li>${member}</li>`)
+        .join('');
+
+    document.getElementById('modalBody').innerHTML = `
+        <span class="close-btn" onclick="closeModal()">×</span>
+
+        <h1 style="margin-bottom:15px;">${project.name}</h1>
+
+        <p style="line-height:1.8; color:#cbd5e1;">
+            ${project.description}
+        </p>
+
+        <div class="progress">
+            <div style="width:${project.progress}%"></div>
+        </div>
+
+        <p>Progress : ${project.progress}%</p>
+
+        <br>
+
+        <h3>Technology</h3>
+        <div class="tech" style="margin-top:10px;">
+            ${project.technology.map(t => `<span>${t}</span>`).join('')}
+        </div>
+
+        <br>
+
+        <h3>Tags</h3>
+        <div class="tech" style="margin-top:10px;">
+            ${tags}
+        </div>
+
+        <br>
+
+        <h3>Team Member</h3>
+        <ul style="margin-top:10px; padding-left:20px; line-height:1.8;">
+            ${team}
+        </ul>
+
+        <br>
+
+        <h3>Gallery</h3>
+
+        <div class="gallery">
+            ${gallery}
+        </div>
+
+        <br>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a href="${project.website}" target="_blank" class="btn">
+                Visit Website
+            </a>
+
+            <a href="${project.repository}" target="_blank" class="btn">
+                Repository
+            </a>
+        </div>
+
+        <br>
+
+        <small>
+            Last Update : ${project.last_update}
+        </small>
+    `;
+
+    document.getElementById('modal').style.display = 'flex';
 }
 
 function closeModal(){
-  document.getElementById('projectModal').classList.remove('active');
-
-  document.getElementById('projectName').value='';
-  document.getElementById('projectLink').value='';
-  document.getElementById('projectDesc').value='';
-
-  editIndex = null;
+    document.getElementById('modal').style.display = 'none';
 }
 
-async function saveProject(){
-
-  const name = document.getElementById('projectName').value;
-  const link = document.getElementById('projectLink').value;
-  const icon = document.getElementById('projectIcon').value;
-  const color = document.getElementById('projectColor').value;
-  const desc = document.getElementById('projectDesc').value;
-
-  if(!name || !link){
-
-    showToast('Project name and link are required');
-
-    return;
-  }
-
-  const data = {
-    name,
-    link,
-    icon,
-    color,
-    desc
-  };
-
-  const response = await fetch('save-project.php',{
-
-    method:'POST',
-
-    headers:{
-      'Content-Type':'application/json'
-    },
-
-    body:JSON.stringify(data)
-
-  });
-
-  const result = await response.json();
-
-  if(result.status === 'success'){
-
-    projects.push(data);
-
-    renderProjects();
-
-    closeModal();
-
-    showToast('Project added successfully');
-
-  }
-
+window.onclick = function(e){
+    if(e.target.id === 'modal'){
+        closeModal();
+    }
 }
 
-function deleteProject(index){
+function filterProjects(){
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const category = document.getElementById('categoryFilter').value;
+    const status = document.getElementById('statusFilter').value;
 
-  if(confirm('Delete this project?')){
-    projects.splice(index,1);
+    const filtered = allProjects.filter(project => {
 
-    localStorage.setItem('projects',JSON.stringify(projects));
+        const matchSearch =
+            project.name.toLowerCase().includes(search) ||
+            project.description.toLowerCase().includes(search);
 
-    renderProjects();
+        const matchCategory =
+            category === '' || project.category === category;
 
-    showToast('Project deleted');
-  }
-}
+        const matchStatus =
+            status === '' || project.status === status;
 
-function editProject(index){
-
-  const project = projects[index];
-
-  document.getElementById('projectName').value = project.name;
-  document.getElementById('projectLink').value = project.link;
-  document.getElementById('projectIcon').value = project.icon;
-  document.getElementById('projectColor').value = project.color;
-  document.getElementById('projectDesc').value = project.desc;
-
-  editIndex = index;
-
-  openModal();
-}
-
-function showToast(message){
-
-  const toast = document.getElementById('toast');
-
-  toast.innerText = message;
-  toast.classList.add('show');
-
-  setTimeout(()=>{
-    toast.classList.remove('show');
-  },2500);
-}
-
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('collapsed');
-  document.getElementById('main').classList.toggle('expand');
-}
-
-function toggleDarkMode(){
-  document.body.classList.toggle('dark');
-}
-
-document.getElementById('searchInput').addEventListener('input',(e)=>{
-  renderProjects(e.target.value);
-});
-
-function applyRoleAccess(){
-
-  if(currentUser.role === 'guest'){
-
-    document.querySelectorAll('.admin-only').forEach(el=>{
-
-      el.style.display = 'none';
-
+        return matchSearch && matchCategory && matchStatus;
     });
 
-  }
-
+    renderProjects(filtered);
 }
 
-function updateDate(){
 
-  const now = new Date();
+document.getElementById('searchInput')
+.addEventListener('input', filterProjects);
 
-  const options = {
-    weekday:'long',
-    year:'numeric',
-    month:'long',
-    day:'numeric'
-  };
 
-  document.getElementById('dateNow').innerHTML = now.toLocaleDateString('id-ID',options);
-}
+document.getElementById('categoryFilter')
+.addEventListener('change', filterProjects);
 
-updateDate();
-applyRoleAccess();
+
+document.getElementById('statusFilter')
+.addEventListener('change', filterProjects);
+
+loadProjects();
 </script>
 
 </body>
