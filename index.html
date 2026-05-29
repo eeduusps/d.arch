@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Project Hub Dashboard</title>
+
+<!-- FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- FONT AWESOME -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --sub:#6b7280;
+  --border:#e5e7eb;
+  --shadow:0 10px 30px rgba(0,0,0,.06);
+  --primary:#2563eb;
+  --hover:#f3f6fb;
+}
+
+body.dark{
+  --bg:#111827;
+  --card:#1f2937;
+  --text:#f9fafb;
+  --sub:#9ca3af;
+  --border:#374151;
+  --hover:#273244;
+}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s ease;
+}
+
+.container{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  background:var(--card);
+  border-right:1px solid var(--border);
+  padding:24px;
+  transition:.3s;
+  position:fixed;
+  top:0;
+  left:0;
+  height:100vh;
+  z-index:100;
+}
+
+.sidebar.collapsed{
+  width:90px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:40px;
+}
+
+.logo-icon{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:20px;
+}
+
+.logo h2{
+  font-size:20px;
+}
+
+.sidebar.collapsed .logo h2,
+.sidebar.collapsed .menu span{
+  display:none;
+}
+
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.menu button{
+  border:none;
+  background:none;
+  padding:14px;
+  border-radius:14px;
+  cursor:pointer;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:15px;
+  transition:.2s;
+}
+
+.menu button:hover{
+  background:var(--hover);
+}
+
+/* MAIN */
+.main{
+  margin-left:260px;
+  flex:1;
+  padding:30px;
+  transition:.3s;
+}
+
+.main.expand{
+  margin-left:90px;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:30px;
+}
+
+.header-left h1{
+  font-size:32px;
+  margin-bottom:8px;
+}
+
+.header-left p{
+  color:var(--sub);
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.search-box{
+  position:relative;
+}
+
+.search-box input{
+  width:260px;
+  padding:12px 16px 12px 42px;
+  border:none;
+  border-radius:14px;
+  background:var(--card);
+  color:var(--text);
+  box-shadow:var(--shadow);
+  outline:none;
+}
+
+.search-box i{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--sub);
+}
+
+.profile{
+  background:var(--card);
+  padding:10px 16px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  box-shadow:var(--shadow);
+}
+
+.profile-avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+}
+
+/* TOP ACTION */
+.top-action{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:26px;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.date-box{
+  color:var(--sub);
+  font-size:15px;
+}
+
+.action-buttons{
+  display:flex;
+  gap:12px;
+}
+
+.btn{
+  border:none;
+  padding:12px 18px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.2s;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+  color:white;
+}
+
+.btn-secondary{
+  background:var(--card);
+  color:var(--text);
+  box-shadow:var(--shadow);
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+/* GRID */
+.project-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:22px;
+}
+
+.project-card{
+  background:var(--card);
+  border-radius:24px;
+  padding:22px;
+  position:relative;
+  box-shadow:var(--shadow);
+  transition:.25s ease;
+  border:1px solid var(--border);
+}
+
+.project-card:hover{
+  transform:translateY(-6px);
+}
+
+.project-icon{
+  width:70px;
+  height:70px;
+  border-radius:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  color:white;
+  margin-bottom:18px;
+}
+
+.project-card h3{
+  margin-bottom:10px;
+}
+
+.project-card p{
+  color:var(--sub);
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:22px;
+}
+
+.card-actions{
+  display:flex;
+  gap:10px;
+}
+
+.card-actions button,
+.card-actions a{
+  flex:1;
+  text-align:center;
+  text-decoration:none;
+  border:none;
+  padding:10px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.open-btn{
+  background:#2563eb;
+  color:white;
+}
+
+.edit-btn{
+  background:#f3f4f6;
+}
+
+.delete-btn{
+  background:#fee2e2;
+  color:#dc2626;
+}
+
+.empty-state{
+  background:var(--card);
+  padding:50px;
+  text-align:center;
+  border-radius:24px;
+  box-shadow:var(--shadow);
+}
+
+.empty-state i{
+  font-size:60px;
+  margin-bottom:18px;
+  color:#9ca3af;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:999;
+}
+
+.modal.active{
+  display:flex;
+}
+
+.modal-content{
+  width:100%;
+  max-width:520px;
+  background:var(--card);
+  border-radius:28px;
+  padding:28px;
+}
+
+.modal-content h2{
+  margin-bottom:24px;
+}
+
+.form-group{
+  margin-bottom:18px;
+}
+
+.form-group label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+  padding:14px;
+  border-radius:14px;
+  outline:none;
+}
+
+.modal-buttons{
+  display:flex;
+  justify-content:flex-end;
+  gap:12px;
+  margin-top:24px;
+}
+
+.toast{
+  position:fixed;
+  right:30px;
+  bottom:30px;
+  background:#111827;
+  color:white;
+  padding:14px 18px;
+  border-radius:14px;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:9999;
+}
+
+.toast.show{
+  opacity:1;
+}
+
+@media(max-width:900px){
+  .sidebar{
+    width:90px;
+  }
+
+  .sidebar .logo h2,
+  .sidebar .menu span{
+    display:none;
+  }
+
+  .main{
+    margin-left:90px;
+  }
+}
+
+@media(max-width:600px){
+  .main{
+    margin-left:0;
+    padding:20px;
+  }
+
+  .sidebar{
+    display:none;
+  }
+
+  .header{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .search-box input{
+    width:100%;
+  }
+
+  .header-right{
+    width:100%;
+    flex-wrap:wrap;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <h2>My Project</h2>
+    </div>
+
+    <div class="menu">
+      <button onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+        <span>Toggle Sidebar</span>
+      </button>
+
+      <button onclick="toggleDarkMode()">
+        <i class="fa-solid fa-moon"></i>
+        <span>Dark Mode</span>
+      </button>
+
+      <button 
+  class="admin-only"
+  onclick="openModal()"
+  style="display:none"
+>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="main">
+
+    <div class="header">
+
+      <div class="header-left">
+        <h1>d'arch</h1>
+        <p>My Personal Project</p>
+      </div>
+
+      <div class="header-right">
+
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search project...">
+        </div>
+
+        <div class="profile">
+          <div class="profile-avatar">D</div>
+          <div>
+            <strong>Developer</strong>
+            <div style="font-size:13px;color:var(--sub)">Administrator</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="top-action">
+
+      <div class="date-box" id="dateNow"></div>
+
+      <div class="action-buttons">
+        <button class="btn btn-secondary" onclick="toggleDarkMode()">
+          <i class="fa-solid fa-circle-half-stroke"></i>
+          Theme
+        </button>
+<button 
+  class="btn btn-primary admin-only"
+  onclick="openModal()"
+  style="display:none"
+>
+        </button>
+      </div>
+
+    </div>
+
+    <div id="projectContainer" class="project-grid"></div>
+
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="projectModal">
+
+  <div class="modal-content">
+
+    <h2>Add Project</h2>
+
+    <div class="form-group">
+      <label>Project Name</label>
+      <input type="text" id="projectName">
+    </div>
+
+    <div class="form-group">
+      <label>HTML File Link</label>
+      <input type="text" id="projectLink" placeholder="example: index.html">
+    </div>
+
+    <div class="form-group">
+      <label>Icon</label>
+      <select id="projectIcon">
+        <option value="fa-chart-line">Chart</option>
+        <option value="fa-wallet">Wallet</option>
+        <option value="fa-database">Database</option>
+        <option value="fa-robot">AI</option>
+        <option value="fa-folder">Folder</option>
+        <option value="fa-money-bill-wave">Finance</option>
+        <option value="fa-users">Users</option>
+        <option value="fa-file">File</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Icon Color</label>
+      <input type="color" id="projectColor" value="#2563eb">
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="projectDesc"></textarea>
+    </div>
+
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProject()">Save Project</button>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+let projects = [];
+
+fetch('database/projects.json')
+  .then(res => res.json())
+  .then(data => {
+
+    projects = data;
+
+    renderProjects();
+
+  });
+
+let editIndex = null;
+let currentUser = {
+  username:'admin',
+  role:'admin'
+};
+
+
+
+const projectContainer = document.getElementById('projectContainer');
+
+function renderProjects(filter=''){
+
+  projectContainer.innerHTML='';
+
+  const filtered = projects.filter(p =>
+    p.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  if(filtered.length === 0){
+    projectContainer.innerHTML = `
+      <div class="empty-state">
+        <i class="fa-solid fa-folder-open"></i>
+        <h2>No Project Found</h2>
+        <p style="margin-top:10px;color:var(--sub)">
+          Add your first project to get started.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  filtered.forEach((project,index)=>{
+
+    projectContainer.innerHTML += `
+      <div class="project-card">
+
+        <div class="project-icon" style="background:${project.color}">
+          <i class="fa-solid ${project.icon}"></i>
+        </div>
+
+        <h3>${project.name}</h3>
+        <p>${project.desc}</p>
+
+        <div class="card-actions">
+
+          <a href="${project.link}" class="open-btn">
+            Open
+          </a>
+
+          ${currentUser.role === 'admin' ? `
+
+<button class="edit-btn" onclick="editProject(${index})">
+  <i class="fa-solid fa-pen"></i>
+</button>
+
+<button class="delete-btn" onclick="deleteProject(${index})">
+  <i class="fa-solid fa-trash"></i>
+</button>
+
+` : ''}
+
+        </div>
+
+      </div>
+    `;
+
+  });
+}
+
+function openModal(){
+  document.getElementById('projectModal').classList.add('active');
+}
+
+function closeModal(){
+  document.getElementById('projectModal').classList.remove('active');
+
+  document.getElementById('projectName').value='';
+  document.getElementById('projectLink').value='';
+  document.getElementById('projectDesc').value='';
+
+  editIndex = null;
+}
+
+async function saveProject(){
+
+  const name = document.getElementById('projectName').value;
+  const link = document.getElementById('projectLink').value;
+  const icon = document.getElementById('projectIcon').value;
+  const color = document.getElementById('projectColor').value;
+  const desc = document.getElementById('projectDesc').value;
+
+  if(!name || !link){
+
+    showToast('Project name and link are required');
+
+    return;
+  }
+
+  const data = {
+    name,
+    link,
+    icon,
+    color,
+    desc
+  };
+
+  const response = await fetch('save-project.php',{
+
+    method:'POST',
+
+    headers:{
+      'Content-Type':'application/json'
+    },
+
+    body:JSON.stringify(data)
+
+  });
+
+  const result = await response.json();
+
+  if(result.status === 'success'){
+
+    projects.push(data);
+
+    renderProjects();
+
+    closeModal();
+
+    showToast('Project added successfully');
+
+  }
+
+}
+
+function deleteProject(index){
+
+  if(confirm('Delete this project?')){
+    projects.splice(index,1);
+
+    localStorage.setItem('projects',JSON.stringify(projects));
+
+    renderProjects();
+
+    showToast('Project deleted');
+  }
+}
+
+function editProject(index){
+
+  const project = projects[index];
+
+  document.getElementById('projectName').value = project.name;
+  document.getElementById('projectLink').value = project.link;
+  document.getElementById('projectIcon').value = project.icon;
+  document.getElementById('projectColor').value = project.color;
+  document.getElementById('projectDesc').value = project.desc;
+
+  editIndex = index;
+
+  openModal();
+}
+
+function showToast(message){
+
+  const toast = document.getElementById('toast');
+
+  toast.innerText = message;
+  toast.classList.add('show');
+
+  setTimeout(()=>{
+    toast.classList.remove('show');
+  },2500);
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('collapsed');
+  document.getElementById('main').classList.toggle('expand');
+}
+
+function toggleDarkMode(){
+  document.body.classList.toggle('dark');
+}
+
+document.getElementById('searchInput').addEventListener('input',(e)=>{
+  renderProjects(e.target.value);
+});
+
+function applyRoleAccess(){
+
+  if(currentUser.role === 'guest'){
+
+    document.querySelectorAll('.admin-only').forEach(el=>{
+
+      el.style.display = 'none';
+
+    });
+
+  }
+
+}
+
+function updateDate(){
+
+  const now = new Date();
+
+  const options = {
+    weekday:'long',
+    year:'numeric',
+    month:'long',
+    day:'numeric'
+  };
+
+  document.getElementById('dateNow').innerHTML = now.toLocaleDateString('id-ID',options);
+}
+
+updateDate();
+applyRoleAccess();
+</script>
+
+</body>
+</html>
